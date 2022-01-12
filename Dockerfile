@@ -5,7 +5,6 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json ./
-# RUN npm install -g npm@8.3.0
 RUN npm install
 
 # Rebuild the source code only when needed
@@ -13,7 +12,6 @@ FROM node:17.3.0-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm install date-fns gray-matter remark remark-html
 RUN npm run build
 
 # Production image, copy all the files and run next
